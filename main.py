@@ -5,8 +5,8 @@ from tkinter import filedialog, messagebox
 import webbrowser
 
 
-#Instalar liberira
-# pip install yt-dlp
+#Instalar libreria  ####
+# pip install yt-dlp 
 
 # Función para seleccionar la carpeta de destino
 def seleccionar_carpeta():
@@ -51,7 +51,7 @@ def ver_video():
     else:
         messagebox.showerror("Error", "URL de YouTube no válida.")
 
-# Crear ventana
+# Crear ventana 
 ventana = tk.Tk()
 ventana.title("Descargador de YouTube en Máxima Calidad")
 ventana.geometry("500x250")
