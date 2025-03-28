@@ -1,12 +1,7 @@
-import os
 import subprocess
 import tkinter as tk
 from tkinter import filedialog, messagebox
-import webbrowser
-
-
-#Instalar libreria  ####
-# pip install yt-dlp 
+from tkinter import ttk
 
 # Función para seleccionar la carpeta de destino
 def seleccionar_carpeta():
@@ -15,7 +10,7 @@ def seleccionar_carpeta():
         entry_ruta.delete(0, tk.END)
         entry_ruta.insert(0, carpeta)
 
-# Función para descargar el video en la mejor calidad
+# Función para descargar el video en la mejor calidad en un solo archivo
 def descargar_video():
     video_url = entry_url.get()
     download_path = entry_ruta.get()
@@ -27,8 +22,8 @@ def descargar_video():
     label_estado.config(text="Iniciando descarga en máxima calidad...")
 
     try:
-        # Comando yt-dlp para descargar en máxima calidad (mejor video + mejor audio)
-        comando = f'yt-dlp -f bestvideo+bestaudio --merge-output-format mp4 "{video_url}" -o "{download_path}/%(title)s.%(ext)s"'
+        # Descargar en un solo archivo (mkv, mp4, etc.)
+        comando = f'yt-dlp -f "bv*+ba/b" --merge-output-format mkv "{video_url}" -o "{download_path}/%(title)s.mkv"'
         
         # Ejecutar el comando
         proceso = subprocess.run(comando, shell=True, capture_output=True, text=True)
@@ -41,43 +36,44 @@ def descargar_video():
     except Exception as e:
         label_estado.config(text=f"Error: {str(e)}")
 
-# Función para ver el video en un navegador
-def ver_video():
-    video_url = entry_url.get()
-    if "=" in video_url:
-        video_id = video_url.split("=")[-1]
-        embed_url = f"https://www.youtube.com/embed/{video_id}"
-        webbrowser.open(embed_url)
-    else:
-        messagebox.showerror("Error", "URL de YouTube no válida.")
-
-# Crear ventana 
+# Crear ventana
 ventana = tk.Tk()
 ventana.title("Descargador de YouTube en Máxima Calidad")
-ventana.geometry("500x250")
+ventana.geometry("600x300")
+ventana.config(bg="#f4f4f9")  # Fondo color claro
+
+# Encabezado
+label_titulo = tk.Label(ventana, text="Descargador de YouTube", font=("Arial", 18, "bold"), bg="#f4f4f9")
+label_titulo.pack(pady=10)
 
 # Elementos de la interfaz
-tk.Label(ventana, text="URL del Video:").pack(pady=5)
-entry_url = tk.Entry(ventana, width=50)
-entry_url.pack(pady=5)
+frame = tk.Frame(ventana, bg="#f4f4f9")
+frame.pack(pady=20)
 
-tk.Label(ventana, text="Ruta de Descarga:").pack(pady=5)
-entry_ruta = tk.Entry(ventana, width=50)
-entry_ruta.pack(pady=5)
-btn_ruta = tk.Button(ventana, text="Seleccionar Carpeta", command=seleccionar_carpeta)
-btn_ruta.pack(pady=5)
+tk.Label(frame, text="URL del Video:", font=("Arial", 12), bg="#f4f4f9").grid(row=0, column=0, padx=10, pady=5)
+entry_url = tk.Entry(frame, width=40, font=("Arial", 12))
+entry_url.grid(row=0, column=1, padx=10, pady=5)
 
-btn_descargar = tk.Button(ventana, text="Descargar en Máxima Calidad", command=descargar_video)
-btn_descargar.pack(pady=5)
+tk.Label(frame, text="Ruta de Descarga:", font=("Arial", 12), bg="#f4f4f9").grid(row=1, column=0, padx=10, pady=5)
+entry_ruta = tk.Entry(frame, width=40, font=("Arial", 12))
+entry_ruta.grid(row=1, column=1, padx=10, pady=5)
 
-btn_ver = tk.Button(ventana, text="Ver Video", command=ver_video)
-btn_ver.pack(pady=5)
+# Botón para seleccionar la carpeta
+btn_ruta = ttk.Button(frame, text="Seleccionar Carpeta", command=seleccionar_carpeta, style="TButton")
+btn_ruta.grid(row=2, columnspan=2, pady=10)
 
-label_estado = tk.Label(ventana, text="", fg="blue")
+# Botón para descargar
+btn_descargar = ttk.Button(ventana, text="Descargar en Máxima Calidad", command=descargar_video, style="TButton")
+btn_descargar.pack(pady=10)
+
+# Etiqueta para mostrar el estado
+label_estado = tk.Label(ventana, text="", font=("Arial", 12), fg="blue", bg="#f4f4f9")
 label_estado.pack(pady=10)
+
+# Estilo para los botones con texto negro
+style = ttk.Style()
+style.configure("TButton", font=("Arial", 12), padding=10, relief="flat", background="#4CAF50", foreground="black")  # Cambio de color de texto
+style.map("TButton", background=[("active", "#45a049")])
 
 # Iniciar el loop de la interfaz
 ventana.mainloop()
-
-
-
