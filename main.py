@@ -77,3 +77,5 @@ style.map("TButton", background=[("active", "#45a049")])
 
 # Iniciar el loop de la interfaz
 ventana.mainloop()
+
+#Simplificado
