@@ -67,7 +67,7 @@ def descargar_video():
 # Crear ventana
 ventana = tk.Tk()
 ventana.title("Descargador de YouTube en Máxima Calidad")
-ventana.geometry("600x350")
+ventana.geometry("600x450")
 ventana.config(bg="#f4f4f9")
 
 label_titulo = tk.Label(ventana, text="Descargador de YouTube", font=("Arial", 18, "bold"), bg="#f4f4f9")
